@@ -111,12 +111,17 @@ public class BaseInvadersServer implements BIServer, Runnable {
             sb.append(" ").append(Configurations.getTickDelay());
             sb.append(" ").append(Configurations.getBombExplosionRadius());
             sb.append(" ").append(gameMap.getPlayers().size());
+
             gameMap.getPlayers().forEach(player -> {
-                sb.append(" ").append(player.getId()).append(" ").append(player.getName()).append(" ").append(gameMap.getUserScore(player.getName())).append(" ").append(player.getPosition().getX()).append(" ").append(player.getPosition().getY()).append(" ").append(player.getVelocity().getX()).append(" ").append(player.getVelocity().getY());
+                sb.append(" ").append(player.getId()).append(" ").append(player.getName()).append(" ").append(gameMap.getUserMinerals(player.getName())).append(" ").append(gameMap.getUserScore(player.getName())).append(" ").append(player.getPosition().getX()).append(" ").append(player.getPosition().getY()).append(" ").append(player.getVelocity().getX()).append(" ").append(player.getVelocity().getY());
             });
             sb.append(" ").append(gameMap.getMines().size());
             gameMap.getMines().forEach(mine -> {
-                sb.append(" ").append(mine.getOwner() == null ? "--" : mine.getOwner().getName()).append(" ").append(mine.getPosition().getX()).append(" ").append(mine.getPosition().getY());
+                sb.append(" ").append(mine.getOwner() == null ? "--" : mine.getOwner().getName()).append(" ").append(mine.getPosition().getX()).append(" ").append(mine.getPosition().getY()).append(" ").append(mine.getResources()).append(" ").append(mine.getMaxResources());
+            });
+            sb.append(" ").append(gameMap.getStations().size());
+            gameMap.getStations().forEach(station-> {
+                sb.append(" ").append(station.getPosition().getX()).append(" ").append(station.getPosition().getY());
             });
             sb.append(" ").append(gameMap.getBombs().size());
             gameMap.getBombs().forEach(bomb -> {
@@ -398,7 +403,7 @@ public class BaseInvadersServer implements BIServer, Runnable {
                 gameMap.getMines().stream().filter(mine -> mine.distanceTo(p) < Configurations.getScanRadius()).forEach(mine -> mines.add(mine));
                 sb.append(mines.size()).append(" ");
                 mines.stream().forEach((mine) -> {
-                    sb.append(mine.getOwner() != null ? mine.getOwner().getName() : "--").append(" ").append(mine.getPosition().getX()).append(" ").append(mine.getPosition().getY()).append(" ");
+                    sb.append(mine.getOwner() != null ? mine.getOwner().getName() : "--").append(" ").append(mine.getPosition().getX()).append(" ").append(mine.getPosition().getY()).append(" ").append(mine.getResources()).append(" ");
                 });
                 sb.append(" STATIONS ");
                 List<Station> stations = new LinkedList<>();
